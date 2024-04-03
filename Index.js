@@ -9,11 +9,11 @@ addEventListener('fetch', (event) => {
 async function handleRequest (request) {
   const { pathname } = new URL(request.url)
 
-  if (pathname.startsWith('/@')) {
-      const handle = pathname.split('.')?.[0]
-    
-    if (handle !== '') { 
-      const url = `https://www.youtube.com/${handle}/live`
+  if (pathname.startsWith('/channel/')) {
+    const channel = pathname.split('/')?.[2]?.split('.')?.[0]
+
+    if (channel !== '') {
+      const url = `https://www.youtube.com/channel/${channel}/live`
 
       const response = await fetch(url, {
         cf: {
@@ -31,7 +31,7 @@ async function handleRequest (request) {
         throw Error(`Youtube URL (${url}) failed with status: ${response.status}`)
       }
     } else {
-      throw Error(`Channel Name not found: ${pathname}`)
+      throw Error(`Channel ID not found: ${pathname}`)
     }
   } else {
     throw Error(`Path not found: ${pathname}`)
